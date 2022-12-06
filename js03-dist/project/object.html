@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object演習</title>
+</head>
+<body>
+<script>
+const object= {
+    a:1,
+    b:1
+}
+console.log(object);
+// オブジェクトの中身を取得してみる
+const post = {
+    title: "投稿タイトル",
+    text: "本文",
+    user: {
+        name: "ジーズ太郎",
+        email: "gstaro@example.com"
+    }
+};
+// 理論上は無限に入れ込むことができる
+
+console.log(post);
+console.log(post.title);
+// ↑postの中からtitleを取り出す
+console.log(post.text);
+console.log(post.user);
+// ↑ここでnameとemailが取り出せている
+console.log(post.user.name);
+// objectのvalueは文字列も配列もobjectも入れることができる
+
+// プロパティを追加することもできる（キーを追加）
+// 〇〇.加えたいキーで追加
+post.fav = 10;
+console.log(post);
+
+//注意点： オブジェクトを書く際の注意点は,(カンマ)が最後に必要
+
+// objectと配列を組み合わせてデータベースを作ることが多い
+const posts= [
+{
+    title: "投稿タイトル",
+    text: "本文",
+    user: {
+        name: "ジーズ太郎",
+        email: "gstaro@example.com"
+    }
+},
+{
+    title: "投稿タイトル",
+    text: "本文",
+    user: {
+        name: "ジーズ太郎",
+        email: "gstaro@example.com"
+    }
+},
+{
+    title: "投稿タイトル",
+    text: "本文",
+    user: {
+        name: "ジーズ太郎",
+        email: "gstaro@example.com"
+    }
+}  
+]
+// ↑の同じ様なデータ構造であればforでも良い
+
+console.log(posts);
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Chatアプリ</title>
+</head>
+<body>
+
+<!-- コンテンツ表示画面 -->
+<div>
+    <div>
+        名前: <input type="text" id="uname">
+    </div>
+    <div>
+        <textarea name="" id="text" cols="30" rows="10"></textarea>
+        <button id="send">送信</button>
+    </div>
+    <div id="output"></div>
+</div>
+
+
+<!--/ コンテンツ表示画面 -->
+
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- JQuery -->
+
+
+<!--** 以下Firebase **-->
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+    import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved }
+        from "https://cdnjs.cloudflare.com/ajax/libs/firebase/9.14.0/firebase-database.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+    // バージョン情報（9.14.0）が揃っていないとエラーになる
+    // Import {} ←便利ツールとして{}の中を取り出している 
+    
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyA8r5jwlRHyXnyceruSr2H-YI3sSNH1Fnc",
+      authDomain: "fir-demo-addcc.firebaseapp.com",
+      projectId: "fir-demo-addcc",
+      storageBucket: "fir-demo-addcc.appspot.com",
+      messagingSenderId: "1016773091878",
+      appId: "1:1016773091878:web:eea9eb0156ab92f057bce7"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    const db= getDatabase(app);
+    // ↑リアルタイムデータベースへ接続する、という指示
+    const dbRef= ref(db,"chat"); 
+    // ↑リアルタイムデータベース内のchatを使う
+
+    // #sendがクリックされたら名前・本文情報を取得する
+    $("#send").on("click", function(){
+        // const uname= $("#uname").val();
+        // const text=$("#text").val();
+        const msg= {
+            // オブジェクトを指定。キーとバリューをかく。
+            uname: $("#uname").val(),
+            text: $("#text").val(),
+        }
+        // console.log(uname,text);
+    // Firebaseにデータを保存する　pushとsetを使う。importしたpushとsetあり、なので使える。
+        const newPostRef =push(dbRef);
+        console.log("newPostRef: ",newPostRef);
+        set(newPostRef,msg);
+    });
+
+    onChildAdded(dbRef, function(data){
+        // チャットの中にあるデータを引っこ抜いてきて、一個ずつ関数を実行する
+        // onChildAddedの役割：ページがロードされたときにチャットの中にあるデータを引っこ抜いてくる
+        const key= data.key
+        const msg= data.val();
+        console.log(msg);
+        const html= `<p>${msg.uname}<br>${msg.text}</p>`;
+        $("#output").append(html);
+    })
+
+    // 送信ではなく、エンターキーを押したらそのまま送信される機能をつける
+  $("#text").on("keydown",function(e){
+    console.log(e.keyCode);  
+    // eの中のkeyCodeを取り出す表示をする。例えばaなら６５番
+    if(e.keyCode===13){
+    const msg= {
+        uname: $("#uname").val(),
+        text: $("#text").val(),
+    };
+        const newPostRef =push(dbRef);
+        set(newPostRef,msg);
+    }
+});
+    
+  </script>
+
+<!-- **Firebase** -->
+
+<!--  -->
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
